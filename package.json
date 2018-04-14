@@ -1,0 +1,35 @@
+{
+  "name": "token",
+  "version": "1.0.0",
+  "description": "Xamxam ERC20 Token",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xamxam/token.git"
+  },
+  "keywords": [
+    "xamxam",
+    "ethereum",
+    "senegal",
+    "dakar",
+    "wolof",
+    "edtech"
+  ],
+  "author": "Fodé Diop",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xamxam/token/issues"
+  },
+  "homepage": "https://github.com/xamxam/token#readme",
+  "dependencies": {
+    "big-integer": "^1.6.28",
+    "dotenv": "^5.0.1",
+    "truffle-hdwallet-provider": "0.0.3"
+  }
+}
