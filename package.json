@@ -30,6 +30,7 @@
   "dependencies": {
     "big-integer": "^1.6.28",
     "dotenv": "^5.0.1",
-    "truffle-hdwallet-provider": "0.0.3"
+    "truffle-hdwallet-provider": "0.0.3",
+    "zeppelin-solidity": "1.8.0"
   }
 }
