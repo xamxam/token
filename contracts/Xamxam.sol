@@ -1,14 +1,15 @@
 pragma solidity ^0.4.21;
 
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
+import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 import "zeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
-contract Xamxam is ERC20 {
+contract Xamxam is Ownable, ERC20 {
   using SafeMath for uint256;
 
   string public constant name = "Xamxam";
   string public constant symbol = "XAM";
-  uint8 public constant decimals = 8;
+  uint8 public constant decimals = 18;
 
   mapping(address => uint256) balances;
 
@@ -24,7 +25,7 @@ contract Xamxam is ERC20 {
   event OwnershipTransferred(address indexed from, address indexed to);
 
   function Xamxam() {
-    INITIAL_SUPPLY = 10000000000000000;
+    INITIAL_SUPPLY = 100000000000000000;
     balances[msg.sender] = INITIAL_SUPPLY;
     totalSupply_ = INITIAL_SUPPLY;
 
@@ -65,9 +66,9 @@ contract Xamxam is ERC20 {
     return true;
   }
 
-  function setOwner(address _newOwner) public onlyOwner {
-    owner = _newOwner;
-    emit OwnershipTransferred(owner, _newOwner);
+  function setOwner(address newOwner) public onlyOwner {
+    owner = newOwner;
+    emit OwnershipTransferred(owner, newOwner);
   }
 
   function () public payable {
