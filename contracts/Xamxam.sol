@@ -116,9 +116,8 @@ contract Xamxam is Ownable, ERC20 {
         if (tokens <= 0) revert();
 
         balanceOf[msg.sender] = balanceOf[msg.sender].sub(tokens);
-        totalSupply = totalSupply.sub(tokens);
+        totalSupply_ = totalSupply_.sub(tokens);
         emit Burn(msg.sender, tokens);
-
         success = true;
     }
 
