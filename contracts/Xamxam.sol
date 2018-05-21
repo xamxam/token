@@ -1,15 +1,16 @@
 pragma solidity ^0.4.23;
 
-import "zeppelin-solidity/contracts/math/SafeMath.sol";
-import "zeppelin-solidity/contracts/ownership/Ownable.sol";
-import "zeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/SafeERC20.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/StandardBurnableToken.sol";
 
-contract Xamxam is Ownable, ERC20 {
+contract Xamxam is Ownable, StandardBurnableToken {
     using SafeMath for uint256;
 
     string public constant name = "Xamxam";
     string public constant symbol = "XAM";
-    uint8 public constant decimals = 18;
+    uint8 public constant decimals = 8;
 
     mapping(address => uint256) balances;
 
@@ -41,7 +42,7 @@ contract Xamxam is Ownable, ERC20 {
     event OwnershipTransferred(address indexed from, address indexed to);
 
     function constructor() public {
-        INITIAL_SUPPLY = 100000000000000000;
+        INITIAL_SUPPLY = 2100000000000000;
         balances[msg.sender] = INITIAL_SUPPLY;
         totalSupply_ = INITIAL_SUPPLY;
 
@@ -108,7 +109,7 @@ contract Xamxam is Ownable, ERC20 {
         freezeof[msg.sender] = freezeOf[msg.sender].sub(tokens);
         balanceOf[msg.sender] = balanceOf[msg.sender].add(tokens);
         emit Unfreeze(msg.sender, tokens);
-        success == true;
+        success = true;
     }
 
     function burn(uint256 tokens) public returns (bool success) {
