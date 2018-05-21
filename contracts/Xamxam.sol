@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.26;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
@@ -44,14 +44,14 @@ contract Xamxam is Ownable, StandardBurnableToken {
     function constructor() public {
         INITIAL_SUPPLY = 2100000000000000;
         balances[msg.sender] = INITIAL_SUPPLY;
-        totalSupply_ = INITIAL_SUPPLY;
+        totalSupply = INITIAL_SUPPLY;
 
         owner = msg.sender;
-        emit Transfer(address(0), owner, totalSupply_);
+        emit Transfer(address(0), owner, totalSupply);
     }
 
     function totalSupply() public view returns (bool success) {
-        return totalSupply_;
+        return totalSupply;
     }
 
     function balanceOf(address tokenOwner) public view returns (uint256 balance) {
@@ -117,7 +117,7 @@ contract Xamxam is Ownable, StandardBurnableToken {
         if (tokens <= 0) revert();
 
         balanceOf[msg.sender] = balanceOf[msg.sender].sub(tokens);
-        totalSupply_ = totalSupply_.sub(tokens);
+        totalSupply = totalSupply.sub(tokens);
         emit Burn(msg.sender, tokens);
         success = true;
     }
@@ -128,6 +128,7 @@ contract Xamxam is Ownable, StandardBurnableToken {
     }
 
     function () public payable {
+        // This contract is payable. Any Ether sent will be used to support the students.
     }
 
 }
