@@ -1,16 +1,17 @@
 pragma solidity ^0.4.26;
 
+import "./ERC20Interface.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/SafeERC20.sol";
-import "openzeppelin-solidity/contracts/token/ERC20/StandardBurnableToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
 
-contract Xamxam is Ownable, StandardBurnableToken {
+contract Xamxam is Ownable, StandardToken, ERC20Interface {
     using SafeMath for uint256;
 
     string public constant name = "Xamxam";
     string public constant symbol = "XAM";
-    uint8 public constant decimals = 8;
+    uint8 public constant decimals = 18;
 
     mapping(address => uint256) balances;
 
@@ -20,29 +21,41 @@ contract Xamxam is Ownable, StandardBurnableToken {
     uint public INITIAL_SUPPLY;
 
     address public owner;
+    bool public frozen = false;
 
     struct Student {
         uint256 stipend;
         uint256 lockValue;
         uint256 lockEndTime;
 
-        mapping(address => uint256) authorized;
+        mapping(address => uint256) public stipendOf;
+        mapping(address => bool) public graduated;
     }
 
     mapping(address => Student) public students;
-    mapping(address => uint256) public stipendOf;
     mapping(address => uint256) public freezeOf;
     mapping(address => uint256) public balanceOf;
 
+
     event Transfer(address indexed from, address indexed to, uint tokens);
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
-    event Freeze(address indexed from, uint256 tokens);
+    event Freeze(address indexed from, uint tokens);
     event Unfreeze(address indexed from, uint tokens);
-    event Burn(address indexed from, uint256 tokens);
+    event Burn(address indexed from, uint tokens);
     event OwnershipTransferred(address indexed from, address indexed to);
 
+    modifier whenNotFrozen() {
+        require(!frozen);
+        _;
+    }
+
+    modifier whenFrozen() {
+        require(frozen);
+        _;
+    }
+
     function constructor() public {
-        INITIAL_SUPPLY = 2100000000000000;
+        INITIAL_SUPPLY = 100**30;
         balances[msg.sender] = INITIAL_SUPPLY;
         totalSupply = INITIAL_SUPPLY;
 
@@ -84,7 +97,7 @@ contract Xamxam is Ownable, StandardBurnableToken {
         if (balanceOf[from] < tokens) revert();
         if (balanceOf[to] + tokens < balanceOf[to]) revert();
         if (tokens > allowance[from[msg.sender]]) revert();
-        
+
         balances[from] = balances[from].sub(tokens);
         allowed[from][msg.sender] = allowed[from][msg.sender].sub(tokens);
         balances[to] = balances[to].add(tokens);
@@ -93,8 +106,8 @@ contract Xamxam is Ownable, StandardBurnableToken {
     }
 
     function freeze(uint256 tokens) public returns (bool success) {
-        if(balanceOf[msg.sender] < tokens) revert();
-        if(tokens <= 0) revert();
+        if (balanceOf[msg.sender] < tokens) revert();
+        if (tokens <= 0) revert();
 
         balanceOf[msg.sender] = balanceOf[msg.sender].sub(tokens);
         freezeOf[msg.sender] = freezeOf[msg.sender].add(tokens);
