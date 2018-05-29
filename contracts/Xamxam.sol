@@ -12,6 +12,7 @@ contract Xamxam is Ownable, StandardToken, ERC20Interface {
     string public constant name = "Xamxam";
     string public constant symbol = "XAM";
     uint8 public constant decimals = 18;
+    uint256 public constant INITIAL_SUPPLY = 100**30;
 
     mapping(address => uint256) balances;
 
@@ -24,9 +25,7 @@ contract Xamxam is Ownable, StandardToken, ERC20Interface {
     bool public frozen = false;
 
     struct Student {
-        uint256 stipend;
-        uint256 lockValue;
-        uint256 lockEndTime;
+        uint256 stipendAmount;
 
         mapping(address => uint256) public stipendOf;
         mapping(address => bool) public graduated;
@@ -53,14 +52,12 @@ contract Xamxam is Ownable, StandardToken, ERC20Interface {
         require(frozen);
         _;
     }
-
-    function constructor() public {
-        INITIAL_SUPPLY = 100**30;
+        constructor() public {
         balances[msg.sender] = INITIAL_SUPPLY;
         totalSupply = INITIAL_SUPPLY;
 
         owner = msg.sender;
-        emit Transfer(address(0), owner, totalSupply);
+        emit Transfer(0x0, owner, totalSupply);
     }
 
     function totalSupply() public view returns (bool success) {
@@ -94,9 +91,9 @@ contract Xamxam is Ownable, StandardToken, ERC20Interface {
     function transferFrom(address from, address to, uint tokens) public returns (bool success) {
         if (to == 0x0) revert();
         if (tokens <= 0) revert();
-        if (balanceOf[from] < tokens) revert();
-        if (balanceOf[to] + tokens < balanceOf[to]) revert();
-        if (tokens > allowance[from[msg.sender]]) revert();
+        if (balances[from] < tokens) revert();
+        if (balances[to] + tokens < balances[to]) revert();
+        if (tokens > allowed[from][msg.sender]) revert();
 
         balances[from] = balances[from].sub(tokens);
         allowed[from][msg.sender] = allowed[from][msg.sender].sub(tokens);
