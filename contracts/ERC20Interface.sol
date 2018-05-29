@@ -1,7 +1,7 @@
-pragma solidity ^0.4.27;
+pragma solidity ^0.4.24;
 
 interface ERC20Interface {
-    function totalSupply() external view returns (uint256 totalSupply);
+    function totalSupply() external view returns (uint256 _totalSupply);
     function balanceOf(address _owner) external view returns (uint256 balance);
     function transfer(address _to, uint256 _value) external view returns (bool success);
     function transferFrom(address _from, address _to, uint256 _value) external view returns (bool success);

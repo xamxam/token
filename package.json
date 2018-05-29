@@ -29,7 +29,9 @@
   "homepage": "https://github.com/xamxam/token#readme",
   "dependencies": {
     "big-integer": "^1.6.28",
+    "chai": "^4.1.2",
     "dotenv": "^5.0.1",
+    "openzeppelin-solidity": "1.9.0",
     "truffle-hdwallet-provider": "0.0.3",
     "zeppelin-solidity": "1.8.0"
   }

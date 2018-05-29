@@ -1,4 +1,4 @@
-pragma solidity ^0.4.26;
+pragma solidity ^0.4.24;
 
 import "./ERC20Interface.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
@@ -6,7 +6,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/SafeERC20.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
 
-contract Xamxam is Ownable, StandardToken, ERC20Interface {
+contract Xamxam is Ownable, StandardToken {
     using SafeMath for uint256;
 
     string public constant name = "Xamxam";
@@ -19,7 +19,6 @@ contract Xamxam is Ownable, StandardToken, ERC20Interface {
     mapping(address => mapping (address => uint256)) allowed;
 
     uint internal totalSupply_;
-    uint public INITIAL_SUPPLY;
 
     address public owner;
     bool public frozen = false;
@@ -27,8 +26,8 @@ contract Xamxam is Ownable, StandardToken, ERC20Interface {
     struct Student {
         uint256 stipendAmount;
 
-        mapping(address => uint256) public stipendOf;
-        mapping(address => bool) public graduated;
+        mapping(address => uint256) stipendOf;
+        mapping(address => bool) graduated;
     }
 
     mapping(address => Student) public students;
@@ -52,16 +51,16 @@ contract Xamxam is Ownable, StandardToken, ERC20Interface {
         require(frozen);
         _;
     }
-        constructor() public {
+    constructor() public {
         balances[msg.sender] = INITIAL_SUPPLY;
-        totalSupply = INITIAL_SUPPLY;
-
+        totalSupply_ = INITIAL_SUPPLY;
         owner = msg.sender;
-        emit Transfer(0x0, owner, totalSupply);
+
+        emit Transfer(0x0, owner, totalSupply_);
     }
 
-    function totalSupply() public view returns (bool success) {
-        return totalSupply;
+    function totalSupply() public view returns (uint256 _totalSupply) {
+        return totalSupply_;
     }
 
     function balanceOf(address tokenOwner) public view returns (uint256 balance) {
@@ -116,7 +115,7 @@ contract Xamxam is Ownable, StandardToken, ERC20Interface {
         if (freezeOf[msg.sender] < tokens) revert();
         if (tokens <= 0) revert();
 
-        freezeof[msg.sender] = freezeOf[msg.sender].sub(tokens);
+        freezeOf[msg.sender] = freezeOf[msg.sender].sub(tokens);
         balanceOf[msg.sender] = balanceOf[msg.sender].add(tokens);
         emit Unfreeze(msg.sender, tokens);
         success = true;
@@ -127,14 +126,15 @@ contract Xamxam is Ownable, StandardToken, ERC20Interface {
         if (tokens <= 0) revert();
 
         balanceOf[msg.sender] = balanceOf[msg.sender].sub(tokens);
-        totalSupply = totalSupply.sub(tokens);
+        totalSupply_ = totalSupply_.sub(tokens);
         emit Burn(msg.sender, tokens);
         success = true;
     }
 
     function withdrawEther(uint256 tokens) public {
         if(msg.sender != owner) revert();
-        owner.transfer[tokens];
+
+        owner.transfer(tokens);
     }
 
     function () public payable {
