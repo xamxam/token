@@ -12,7 +12,7 @@ contract Xamxam is Ownable, StandardToken {
     string public constant name = "Xamxam";
     string public constant symbol = "XAM";
     uint8 public constant decimals = 18;
-    uint256 public constant INITIAL_SUPPLY = 100**30;
+    uint256 public constant INITIAL_SUPPLY = 100000000 * 10**uint(decimals);
 
     mapping(address => uint256) balances;
 
@@ -135,22 +135,6 @@ contract Xamxam is Ownable, StandardToken {
         if(msg.sender != owner) revert();
 
         owner.transfer(tokens);
-    }
-
-    function addStudent(address student) public returns (bool success) {
-
-    }
-
-    function removeStudent(address student) public returns (bool success) {
-
-    }
-
-    function getStudents(uint256 count) public returns (uint256 numberOfStudents) {
-
-    }
-
-    function setGraduation(bool didGraduate) public returns (bool niggaWeMadeit) {
-        
     }
 
     function () public payable {
