@@ -137,6 +137,22 @@ contract Xamxam is Ownable, StandardToken {
         owner.transfer(tokens);
     }
 
+    function addStudent(address student) public returns (bool success) {
+
+    }
+
+    function removeStudent(address student) public returns (bool success) {
+
+    }
+
+    function getStudents(uint256 count) public returns (uint256 numberOfStudents) {
+
+    }
+
+    function setGraduation(bool didGraduate) public returns (bool niggaWeMadeit) {
+        
+    }
+
     function () public payable {
         // This contract is payable. Any Ether sent will be used to support the students.
     }
