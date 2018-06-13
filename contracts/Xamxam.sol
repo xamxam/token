@@ -133,7 +133,6 @@ contract Xamxam is Ownable, StandardToken {
 
     function withdrawEther(uint256 tokens) public {
         if(msg.sender != owner) revert();
-
         owner.transfer(tokens);
     }
 
