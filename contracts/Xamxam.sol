@@ -51,6 +51,7 @@ contract Xamxam is Ownable, StandardToken {
         require(frozen);
         _;
     }
+    
     constructor() public {
         balances[msg.sender] = INITIAL_SUPPLY;
         totalSupply_ = INITIAL_SUPPLY;
