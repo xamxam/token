@@ -34,7 +34,6 @@ contract Xamxam is Ownable, StandardToken {
     mapping(address => uint256) public freezeOf;
     mapping(address => uint256) public balanceOf;
 
-
     event Transfer(address indexed from, address indexed to, uint tokens);
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
     event Freeze(address indexed from, uint tokens);
@@ -51,7 +50,7 @@ contract Xamxam is Ownable, StandardToken {
         require(frozen);
         _;
     }
-    
+
     constructor() public {
         balances[msg.sender] = INITIAL_SUPPLY;
         totalSupply_ = INITIAL_SUPPLY;
@@ -79,8 +78,8 @@ contract Xamxam is Ownable, StandardToken {
     }
 
     function transfer(address to, uint tokens) public returns (bool success) {
-        if (to == 0x0) revert();
-        if (tokens <= 0) revert();
+        require(to != 0x0);
+        require(tokens <= balances[msg.sender]);
 
         balances[msg.sender] = balances[msg.sender].sub(tokens);
         balances[to] = balances[to].add(tokens);
@@ -89,11 +88,9 @@ contract Xamxam is Ownable, StandardToken {
     }
 
     function transferFrom(address from, address to, uint tokens) public returns (bool success) {
-        if (to == 0x0) revert();
-        if (tokens <= 0) revert();
-        if (balances[from] < tokens) revert();
-        if (balances[to] + tokens < balances[to]) revert();
-        if (tokens > allowed[from][msg.sender]) revert();
+        require(to != 0x0);
+        require(tokens <= balances[from]);
+        require(tokens <= allowed[from][msg.sender]);
 
         balances[from] = balances[from].sub(tokens);
         allowed[from][msg.sender] = allowed[from][msg.sender].sub(tokens);
@@ -132,7 +129,7 @@ contract Xamxam is Ownable, StandardToken {
         success = true;
     }
 
-    function withdrawEther(uint256 tokens) public {
+    function withdrawEther(uint256 tokens) public onlyOwner {
         if(msg.sender != owner) revert();
         owner.transfer(tokens);
     }

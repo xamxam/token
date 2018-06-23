@@ -9,7 +9,7 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 let xam = null
 let accounts = null
-let totalSupply = null 
+let totalSupply = null
 let transfer_event = null
 let owner = null
 let owner_balance = null
@@ -25,14 +25,8 @@ beforeEach(async () => {
   xam = await Xamxam.deployed()
 })
 
-// describe('Xamxam Contract', async () => {
-//   it('deploys a contract', async () => {
-//     assert.ok(xam.options.address)
-//   })
-// })
-
 contract('Xamxam ERC20 Token Tests', async (accounts) => {
-  
+
   it('should fail because the function doest not exist in Contract', async () => {
     try {
       await xam.nonExistentFunction()
@@ -83,16 +77,4 @@ contract('Xamxam ERC20 Token Tests', async (accounts) => {
     })
   })
 
-  describe('when the sender has enough balance', async () => {
-    const amount = 100 
-  })
-
-  // describe('balanceOf', async () => {
-  //   it('returns the total number of tokens', async () => {
-  //     const totalSupply = await xam.totalSupply().toNumber()
-  //     expect(totolSUpply).to.equal(100000000000000000000000000000000)
-  //   })
-  // })
-  
 })
-  
